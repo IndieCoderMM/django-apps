@@ -1,0 +1,50 @@
+{% extends "taskmaster/base.html" %}
+{% block pagetitle %}
+	Task Detail
+{% endblock pagetitle %}
+
+{% block pagename %}
+	<span class="w3-badge w3-xlarge w3-deep-purple">
+        😎
+    </span>
+    <span class="w3-text-deep-purple">
+        <b>{{user.username|capfirst}}</b>
+    </span>
+{% endblock pagename %}
+
+{% block content %}
+<div class="w3-card-4 w3-section w3-round" style="width:80%;margin:auto;">
+	<div class="w3-bar w3-deep-purple w3-padding">
+		<div class="w3-bar-item w3-xlarge"><b><i>{{item.name}}</i></b></div>
+		<a href="{% url 'taskmaster:task_update' item.id %}" class="w3-btn w3-white w3-border w3-border-purple  w3-text-deep-purple w3-hover-purple w3-round w3-bar-item w3-right">Edit</a>
+	</div>
+	<div class="w3-container w3-padding w3-text-deep-purple">
+		<span class="w3-tag w3-small w3-yellow w3-round">Created at: {{item.created_at}}</span></p>
+		{% if item.description %}
+			<div class="w3-panel w3-leftbar w3-round w3-border-blue-grey w3-light-grey w3-padding w3-cursive w3-text-deep-purple"><b>{{item.description}}</b>
+			</div>
+		{% endif %}
+		<div class="w3-bar w3-margin-bottom">
+			<div class="w3-bar-item w3-light-grey w3-margin-right" style="width:30%"><b>Priority : </b></div>
+			<div class="w3-bar-item w3-tag  w3-pink w3-round-large"><b>{{item.priority}}</b></div>
+		</div>
+		
+		<div class="w3-bar w3-margin-bottom">
+			<div class="w3-bar-item w3-light-grey w3-margin-right" style="width:30%"><b>Due Date : 
+		</b></div>
+			<div class="w3-bar-item w3-round w3-border">
+				<b>{{item.due_date.date}} </b>
+				<span class="w3-tag w3-round-large w3-dark-grey">
+					{{item.due_date.time}}
+				</span>
+			</div>
+		</div>
+
+		<div class="w3-bar">
+			<div class="w3-bar-item w3-light-grey w3-margin-right" style="width:30%"><b>Master : </b>
+			</div>
+			<a href="{% url 'taskmaster:master_detail' item.todolist.id %}" class="w3-button w3-bar-item w3-deep-purple w3-hover-purple">{{item.todolist}}</a>
+		</div>
+	</div>
+</div>
+{% endblock content %}

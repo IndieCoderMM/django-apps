@@ -1,0 +1,70 @@
+{% extends 'taskmaster/base.html' %}
+
+{% block pagetitle %}
+	Inbox
+{% endblock %}
+
+{% block pagename %}
+	<span class="w3-badge w3-xlarge w3-deep-purple">
+        😎
+    </span>
+    <span class="w3-text-deep-purple">
+        <b>{{user.username|capfirst}}</b>
+    </span>
+{% endblock %}
+
+{% block info %}
+    <div class="w3-panel w3-round w3-border w3-padding w3-text-deep-purple">
+        <h3><b>
+        {% if time.hour < 12 %}
+            Good morning
+        {% elif time.hour <= 17 %}
+            Good Afternoon
+        {% else %}
+            Good Evening
+        {% endif %}
+        , {{user.username|capfirst}}
+        </b></h3>
+        <div class="w3-leftbar w3-border-green w3-pale-green w3-round w3-padding">
+        In this <b>Inbox</b>, all of your completed and upcoming tasks can be seen.
+        </div>
+    </div>
+{% endblock info %}
+
+{% block content %}
+<form action="" method="post">
+    {% csrf_token %}
+    <div class="w3-display-container w3-text-deep-purple w3-bottombar w3-border-deep-purple">
+            <h3>🎁 All Tasks</h3>
+            <button type="submit" class="w3-btn w3-round w3-deep-purple w3-border w3-border-deep-purple w3-hover-white w3-display-right" name="update" value="true">Update</button>
+    </div>
+    {% if tasks %}
+    <div class="w3-light-grey w3-container" style="height:300px;overflow-y:scroll;">
+    <ul class="w3-ul" style="width:80%;margin:auto">
+            {% for task in tasks %}
+                <li class="w3-card w3-white w3-section w3-leftbar w3-border-amber w3-padding">
+                    {% if task.complete %}
+                        <input type="checkbox" name="t{{task.id}}" value="completed" class="w3-check" checked>
+                    {% else %}
+                        <input type="checkbox" name="t{{task.id}}" value="completed" class="w3-check" >
+                    {% endif %}
+                    
+                    <a href="{% url 'taskmaster:task_detail' task.id %}" class="w3-margin-left w3-text-deep-purple w3-large"><b>{{task.name}}</b></a> 
+                    <span class="w3-tag w3-round w3-pink w3-right w3-large">{{task.priority}}</span>
+
+                    <div class="w3-container w3-margin-top w3-small">
+                        <span class="w3-tag w3-round w3-green">{{task.todolist}}</span>
+                        <span class="w3-tag w3-round w3-purple">{{task.due_date}}</span>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    <div>
+    {% else %}
+    <div class="w3-panel w3-yellow w3-leftbar w3-border-amber">
+        <p>You don't have any task added yet. Click <span class="w3-tag w3-deep-purple w3-round">+NewTask</span> button to add new task.</p>
+    </div>
+    {% endif %}
+</form>
+
+{% endblock %}

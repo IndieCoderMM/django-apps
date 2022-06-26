@@ -1,0 +1,59 @@
+{% extends 'taskmaster/base.html' %}
+
+{% block pagetitle %}
+	Masterlists
+{% endblock %}
+
+{% block pagename %}
+	<span class="w3-badge w3-xlarge w3-deep-purple">
+        😎
+    </span>
+    <span class="w3-text-deep-purple">
+        <b>{{user.username|capfirst}}</b>
+    </span>
+{% endblock %}
+
+{% block info %}
+    <div class="w3-panel w3-round w3-border w3-padding w3-text-deep-purple">
+        <h3><b>
+        {% if time.hour < 12 %}
+            Good morning
+        {% elif time.hour <= 17 %}
+            Good Afternoon
+        {% else %}
+            Good Evening
+        {% endif %}
+        , {{user.username|capfirst}}
+        </b></h3>
+        <div class="w3-leftbar w3-border-green w3-pale-green w3-round w3-padding">
+        This is where you can view and edit all of your <b>Masterlists</b>.
+        </div>
+    </div>
+{% endblock info %}
+
+{% block content %}
+<div class="w3-display-container w3-bottombar w3-border-deep-purple">
+    <h3 class="w3-text-deep-purple">📒 Masterlists</h3>
+    <a href="{% url 'taskmaster:master_create' %}" class="w3-btn w3-round w3-deep-purple w3-border w3-border-deep-purple w3-hover-white w3-display-right">+ Add New List
+    </a>
+</div>
+
+{% if masters %}
+    <div class="w3-row-padding w3-container w3-light-grey" style="height:300px;overflow-y:scroll">
+    {% for list in masters %}
+    	<div class="w3-col l4 w3-section">
+    		<a href="{% url 'taskmaster:master_detail' list.id %}" 
+      	class=" w3-card w3-button w3-round w3-topbar w3-border-amber  w3-hover-pale-yellow w3-white" style="width:100%">
+      			<h3 class="w3-text-deep-purple"><b>{{list.name}}</b></h3>
+      		</a>
+    	</div>
+    {% endfor %}
+    </div>
+{% else %}
+    <div class="w3-panel w3-yellow w3-leftbar w3-border-amber">
+        <p>You don't have any master list yet. Click <span class="w3-tag w3-deep-purple">+ AddNewList</span> button to add new masterlist.</p>
+    </div>	
+{% endif %}
+
+{% endblock %}
+

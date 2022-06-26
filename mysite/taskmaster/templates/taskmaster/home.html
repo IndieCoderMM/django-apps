@@ -1,0 +1,88 @@
+{% extends 'taskmaster/base.html' %}
+
+{% block pagetitle %}
+	Homepage
+{% endblock %}
+
+{% block pagename %}
+    <span class="w3-badge w3-xlarge w3-deep-purple">
+        😎
+    </span>
+    <span class="w3-text-deep-purple">
+        <b>{{user.username|capfirst}}</b>
+    </span>
+{% endblock %}
+
+{% block info %}
+    <div class="w3-panel w3-round w3-border w3-padding w3-text-deep-purple">
+        <h3><b>
+        {% if time.hour < 12 %}
+            Good morning
+        {% elif time.hour <= 17 %}
+            Good Afternoon
+        {% else %}
+            Good Evening
+        {% endif %}
+        , {{user.username|capfirst}}
+        </b></h3>
+        <div class="w3-leftbar w3-border-green w3-pale-green w3-round w3-padding">
+        This is your homepage where you can quickly see your upcoming tasks.
+        </div>
+    </div>
+{% endblock info %}
+
+{% block content %}
+    <form action="" method="post">
+    {% csrf_token %}
+    <div class="w3-display-container w3-text-deep-purple w3-bottombar w3-border-deep-purple">
+        <h3>🎯 Upcoming Tasks</h3>
+        <button type="submit" class="w3-btn w3-round w3-deep-purple w3-border w3-border-deep-purple w3-hover-white w3-display-right" name="update" value="true">Update</button>
+    </div>
+    {% if tasks %}
+    <div class="w3-light-grey w3-container" style="height:300px;overflow-y:scroll;">
+        <div class="w3-row-padding">
+            {% for task in tasks %}
+            <div class="w3-col l6">
+                <div class="w3-card w3-white w3-section w3-leftbar w3-border-amber w3-padding">
+                    {% if task.complete %}
+                        <input type="checkbox" name="t{{task.id}}" value="completed" class="w3-check" checked>
+                    {% else %}
+                        <input type="checkbox" name="t{{task.id}}" value="completed" class="w3-check" >
+                    {% endif %}
+                    
+                    <a href="{% url 'taskmaster:task_detail' task.id %}" class="w3-margin-left w3-text-deep-purple w3-large"><b>{{task.name}}</b></a> 
+                    
+                    <span class="w3-tag w3-round w3-pink w3-right w3-xlarge">{{task.priority}}</span>
+
+                    <div class="w3-cell-row w3-round w3-border w3-section" style="width:auto">
+                        <span class="w3-cell">
+                            ⏰
+                        </span>
+                        <span class="w3-cell w3-light-grey">
+                            <b>{{task.due_date}}</b>
+                        </span>
+                    </div>
+                     <a href="{% url 'taskmaster:master_detail' task.todolist.id %}" class="w3-btn w3-green w3-border w3-hover-white">{{task.todolist}}</a>
+                </div>
+            </div>
+            {% endfor %}
+            </div>
+    </div>
+    {% else %}
+    <div class="w3-panel">
+        Everything is done! If you have some tasks on your mind, add by clicking the New Task button.
+    </div>
+    {% endif %}
+    </form>
+{% endblock %}
+
+        {# <h2 class="w3-text-deep-purple w3-center">Welcome to
+        <span class="w3-tag w3-round w3-deep-purple">TASKMASTER</span>
+        </h2>
+        <div class="w3-panel w3-leftbar w3-border-deep-purple w3-round w3-light-grey w3-padding">You're not logged in right now. Log in to organize your tasks and become the most productive person ever. If you don't have an account yet, set up your account in just a few minute.
+        </div>
+        <a href="{% url 'register:register' %}" class="w3-btn w3-round w3-margin w3-yellow w3-border w3-small w3-border-yellow w3-hover-white">Get Started for FREE</a>
+
+        <a href="{% url 'login' %}" class="w3-btn w3-deep-purple w3-border w3-small w3-border-deep-purple w3-hover-white">Log In to Existing Account</a> #}
+
+    

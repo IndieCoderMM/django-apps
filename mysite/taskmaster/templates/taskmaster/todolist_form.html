@@ -1,0 +1,40 @@
+{% extends 'taskmaster/base.html' %}
+{% load widget_tweaks %}
+
+{% block pagetitle %}
+	New Masterlist
+{% endblock %}
+
+{% block pagename %}
+	<span class="w3-badge w3-xlarge w3-deep-purple">
+        😎
+    </span>
+    <span class="w3-text-deep-purple">
+        <b>{{user.username|capfirst}}</b>
+    </span>
+{% endblock %}
+
+{% block content %}
+<div class="w3-card w3-round" style="width:50%;margin:auto">
+	{% if todolist %}
+		<h2 class="w3-deep-purple w3-padding">Rename Masterlist</h2>
+	{% else %}
+		<h2 class="w3-deep-purple w3-padding">Create New Masterlist</h2>
+	{% endif %}
+	<form method="post" class="w3-container w3-margin">
+		{% csrf_token %}
+		<label class="w3-large w3-text-deep-purple"><b>Masterlist:</b></label>
+		{{form.name | add_class:"w3-input w3-border-deep-purple"}}
+
+		<div class="w3-right w3-section">
+			<a class="w3-btn w3-blue-grey w3-border w3-large w3-hover-purple w3-round"  href="{% url 'taskmaster:master' %}">Cancel</a>
+			{% if todolist %}
+				<button class="w3-btn w3-deep-purple w3-border w3-large w3-hover-purple w3-round w3-margin-left"  type="submit">Rename</button>
+			{% else %}
+				<button class="w3-btn w3-deep-purple w3-border w3-large w3-hover-purple w3-round w3-margin-left"  type="submit">Create</button>
+			{% endif %}
+			
+		</div>
+	</form>
+</div>
+{% endblock %}

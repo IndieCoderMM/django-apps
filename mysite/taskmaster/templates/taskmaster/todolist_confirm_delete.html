@@ -1,0 +1,34 @@
+{% extends "taskmaster/base.html" %}
+
+{% block pagetitle %}
+	Delete Masterlist
+{% endblock pagetitle %}
+
+{% block pagename %}
+	<span class="w3-badge w3-xlarge w3-deep-purple">
+        😎
+    </span>
+    <span class="w3-text-deep-purple">
+        <b>{{user.username|capfirst}}</b>
+    </span>
+{% endblock pagename %}
+
+{% block content %}
+<div class="w3-card-4 w3-round" style="width:50%;margin:auto">
+	<h3 class="w3-deep-purple w3-padding">
+		Confirm Deleting Process
+	</h3>
+	<div class="w3-container w3-padding">
+		<p class="w3-large">Are you sure you want to delete the list 
+		<span class="w3-text-deep-purple"><b>{{todolist}}</b></span> and all of its content?</p>
+		<form method="post">
+			{% csrf_token %}
+			<div class="w3-right">
+				<a href="{% url 'taskmaster:master' %}" class="w3-button w3-blue-grey w3-hover-purple">Cancel</a>
+				<button type="submit" class="w3-button w3-pink w3-hover-purple">Delete</button>
+			</div>
+			
+		</form>
+	</div>
+</div>
+{% endblock content %}
