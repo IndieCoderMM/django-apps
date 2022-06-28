@@ -31,45 +31,49 @@
 {% endblock info %}
 
 {% block content %}
-<div class="w3-display-container  w3-bottombar w3-border-deep-purple">
-    <div class="w3-dropdown-hover w3-white">
-        <h2 class="w3-text-deep-purple">📝{{todolist.name}}</h2>
-        <div class="w3-dropdown-content w3-bar-block w3-border w3-border-amber w3-topbar w3-padding">
-            <a href="{% url 'taskmaster:master_update' todolist.id %}" class="w3-btn w3-bar-item w3-deep-purple w3-round w3-border w3-hover-white">Rename</a>
-            <a href="{% url 'taskmaster:master_delete' todolist.id %}" class="w3-btn w3-bar-item w3-pink w3-round w3-border w3-hover-white">Delete</a>
+<form method="post">
+    {% csrf_token %}
+    <div class="w3-display-container  w3-bottombar w3-border-deep-purple">
+        <div class="w3-dropdown-hover w3-white">
+            <h2 class="w3-text-deep-purple">📝{{todolist.name}}</h2>
+            <div class="w3-dropdown-content w3-bar-block w3-border w3-border-amber w3-topbar w3-padding">
+                <a href="{% url 'taskmaster:master_update' todolist.id %}" class="w3-btn w3-bar-item w3-deep-purple w3-round w3-border w3-hover-white">Rename</a>
+                <a href="{% url 'taskmaster:master_delete' todolist.id %}" class="w3-btn w3-bar-item w3-pink w3-round w3-border w3-hover-white">Delete</a>
+            </div>
         </div>
+        <button type="submit" class="w3-btn w3-round w3-deep-purple w3-border w3-border-deep-purple w3-hover-white w3-display-right" name="update" value="true">Update</button>
     </div>
-    <button type="submit" class="w3-btn w3-round w3-deep-purple w3-border w3-border-deep-purple w3-hover-white w3-display-right" name="update" value="true">Update</button>
-</div>
-{% if todolist.item_set.all|length %}
-    <div class="w3-row-padding w3-light-grey" style="height:300px;overflow-y:scroll">
-        {% for task in todolist.item_set.all %}
-        <div class="w3-col l6">
-            <div class="w3-container w3-card w3-white w3-round w3-section w3-padding w3-text-deep-purple">
-                {% if task.complete %}
-                    <input class="w3-check" type="checkbox" name="c{{task.id}}" checked>
-                {% else %}
-                    <input class="w3-check" type="checkbox" name="c{{task.id}}">
-                {% endif %}
-                <a href="{% url 'taskmaster:task_detail' task.id %}" class=" w3-xlarge w3-margin-left">
-                    <b>{{task.name}}</b>
-                </a>
-                <span class="w3-tag w3-round w3-pink w3-right w3-xlarge">{{task.priority}}</span>
-                <div class="w3-cell-row w3-round w3-border w3-section" style="width:80%;margin:auto">
-                    <span class="w3-cell w3-light-grey w3-padding">
-                        ⏰
-                    </span>
-                    <span class="w3-cell w3-padding">
-                        <b>{{task.due_date}}</b>
-                    </span>
-                </div>
-            </div>     
+    {% if todolist.item_set.all|length %}
+        <div class="w3-row-padding w3-light-grey" style="height:300px;overflow-y:scroll">
+            {% for task in todolist.item_set.all %}
+            <div class="w3-col l6">
+                <div class="w3-container w3-card w3-white w3-round w3-section w3-padding w3-text-deep-purple">
+                    {% if task.complete %}
+                        <input class="w3-check" type="checkbox" name="t{{task.id}}" checked>
+                    {% else %}
+                        <input class="w3-check" type="checkbox" name="t{{task.id}}">
+                    {% endif %}
+                    <a href="{% url 'taskmaster:task_detail' task.id %}" class=" w3-xlarge w3-margin-left">
+                        <b>{{task.name}}</b>
+                    </a>
+                    <span class="w3-tag w3-round w3-pink w3-right w3-xlarge">{{task.priority}}</span>
+                    <div class="w3-cell-row w3-round w3-border w3-section" style="width:80%;margin:auto">
+                        <span class="w3-cell w3-light-grey w3-padding">
+                            ⏰
+                        </span>
+                        <span class="w3-cell w3-padding">
+                            <b>{{task.due_date}}</b>
+                        </span>
+                    </div>
+                </div>     
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
-{% else %}
-    <div class="w3-panel w3-yellow w3-leftbar w3-border-amber">
-        <p>You don't have any task added yet. Click <span class="w3-tag w3-deep-purple w3-round">+NewTask</span> button to add new task.</p>
-    </div>
-{% endif %}
+    {% else %}
+        <div class="w3-panel w3-yellow w3-leftbar w3-border-amber">
+            <p>You don't have any task added yet. Click <span class="w3-tag w3-deep-purple w3-round">+NewTask</span> button to add new task.</p>
+        </div>
+    {% endif %}
+</form>
+
 {% endblock %} 

@@ -4,7 +4,7 @@ from django.views import View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
 from .models import ToDoList, Item
 from .forms import ItemForm
@@ -20,10 +20,11 @@ class HomeView(LoginRequiredMixin, View):
         except Http404:
             todolist = []
         for master in todolist:
-            for task in master.item_set.all().order_by('due_date'):
+            for task in master.item_set.all():
                 if task.complete == False:
                     task_list.append(task)
 
+        task_list = sorted(task_list, key=lambda x: x.due_date)
         current_time = datetime.datetime.now()
         ctx = {'tasks': task_list, 'time': current_time}
         return render(request, 'taskmaster/home.html', ctx)
@@ -35,7 +36,7 @@ class HomeView(LoginRequiredMixin, View):
         except Http404:
             todolist = []
         for master in todolist:
-            for task in master.item_set.all().order_by('due_date'):
+            for task in master.item_set.all():
                 if not task.complete:
                     task_list.append(task)
 
@@ -45,6 +46,7 @@ class HomeView(LoginRequiredMixin, View):
                     task.complete = True
                 task.save()
 
+        task_list = sorted(task_list, key=lambda x: x.due_date)
         current_time = datetime.datetime.now()
         ctx = {'tasks': task_list}
         return render(request, 'taskmaster/home.html', ctx)
@@ -68,8 +70,10 @@ class TaskView(LoginRequiredMixin, View):
             master = get_object_or_404(ToDoList, id=pk, user=request.user)
         except Http404:
             master = []
-        for task in master.item_set.all().order_by('due_date'):
+        for task in master.item_set.all():
             task_list.append(task)
+
+        task_list = sorted(task_list, key=lambda x: x.due_date)
         ctx = {'master': master, 'tasks': task_list}
         return render(request, 'taskmaster/item_list.html', ctx)
 
@@ -82,9 +86,10 @@ class InboxView(LoginRequiredMixin, View):
         except Http404:
             todolist = []
         for master in todolist:
-            for task in master.item_set.all().order_by('due_date'):
+            for task in master.item_set.all():
                 task_list.append(task)
-
+        
+        task_list = sorted(task_list, key=lambda x: x.due_date)
         current_time = datetime.datetime.now()
         ctx = {'tasks': task_list, 'time': current_time}
         return render(request, 'taskmaster/inbox.html', ctx)
@@ -97,9 +102,10 @@ class InboxView(LoginRequiredMixin, View):
             todolist = []
 
         for master in todolist:
-            for task in master.item_set.all().order_by('due_date'):
+            for task in master.item_set.all():
                 task_list.append(task)
 
+        task_list = sorted(task_list, key=lambda x: x.due_date)
         ctx = {'tasks': task_list}
         if request.POST.get("update"):
             for task in task_list:
@@ -138,25 +144,22 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
 class MasterDetailView(LoginRequiredMixin, DetailView):
     model = ToDoList 
 
-    def post(self, request):
+    def post(self, request, pk):
         task_list = []
-        try:
-            todolist = get_list_or_404(ToDoList, user=request.user)
-        except Http404:
-            todolist = []
-        for master in todolist:
-            for task in master.item_set.all().order_by('due_date'):
-                if not task.complete:
-                    task_list.append(task)
-
+        todolist = get_object_or_404(ToDoList, id=pk)
+        print(todolist)
+        for task in todolist.item_set.all():
+            task_list.append(task)
+     
         if request.POST.get("update"):
             for task in task_list:
-                if request.POST.get('t' + str(task.id)) == "completed":
+                if request.POST.get('t' + str(task.id)) :
                     task.complete = True
+                else:
+                    task.complete = False
                 task.save()
 
-        ctx = {'tasks': task_list}
-        return render(request, 'taskmaster/home.html', ctx)
+        return HttpResponseRedirect(reverse('taskmaster:master_detail', kwargs={'pk':pk})) 
 
 
 class MasterCreateView(LoginRequiredMixin, CreateView):
