@@ -1,7 +1,7 @@
 {% extends 'taskmaster/base.html' %}
 
 {% block pagetitle %}
-	Homepage
+	Home
 {% endblock %}
 
 {% block pagename %}
@@ -69,8 +69,8 @@
             </div>
     </div>
     {% else %}
-    <div class="w3-panel">
-        Everything is done! If you have some tasks on your mind, add by clicking the New Task button.
+    <div class="w3-panel w3-leftbar w3-border-amber w3-yellow w3-large w3-padding w3-round">
+        Everything is done! If you have some tasks on your mind, add by clicking <span class="w3-tag w3-deep-purple w3-round">+NewTask</span> button.
     </div>
     {% endif %}
     </form>

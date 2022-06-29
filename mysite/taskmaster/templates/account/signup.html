@@ -1,0 +1,55 @@
+{% extends 'taskmaster/base.html' %}
+{% block pagetitle %}
+Sign Up
+{% endblock %}
+{% block pagename %}
+	<span class="w3-text-deep-purple">
+        <b>Sign Up</b>
+    </span>
+{% endblock %}
+
+{% block content %}
+<div class="w3-card w3-section w3-round w3-center "  style="width:50%;margin:auto">
+    <h2 class="w3-deep-purple w3-padding">Create New Account</h2>
+    <form method="post" class="w3-container w3-padding">
+        {% csrf_token %}
+        {% if form.errors %}
+            <div class="w3-text-red">
+                <p>{{form.errors.email}}</p>
+                <p>{{form.errors.username}}</p>
+                <p>{{form.errors.password1}}</p>
+                <p>{{form.errors.password2}}</p>
+            </div>    
+        {% endif %}
+
+        <div class="w3-section"> 
+            <label class="w3-text-deep-purple w3-left w3-large">Email</label>
+            <input type="email" name="email" id="id_email" placeholder="Your Email Address" class="w3-input w3-border w3-border-blue">
+        </div>
+
+        <div class="w3-section"> 
+            <label class="w3-text-deep-purple w3-left w3-large">Username</label>
+            <input type="text" name="username" id="id_username" placeholder="Your Name" class="w3-input w3-border w3-border-blue">
+        </div>
+
+        <div class="w3-section">
+            <label class="w3-text-deep-purple w3-left w3-large">Password</label>
+            <input type="password" name="password1" id="id_password1" placeholder="Password" class="w3-input w3-border w3-border-blue">
+        </div>
+
+        <div class="w3-section">
+            <label class="w3-text-deep-purple w3-left w3-large">Confirm Password</label>
+            <input type="password" name="password2" id="id_password2" placeholder="Password" class="w3-input w3-border w3-border-blue">
+        </div>
+
+        {% if redirect_field_value %}
+            <input type="hidden" name="{{redirect_field_name}}" value="{{redirect_field_value}}">
+        {% endif %}
+
+        <button type="submit" class="w3-btn w3-deep-purple w3-round w3-hover-white w3-border">Sign Up</button>
+
+        <p class="w3-large">Already have an account? <a href="{% url 'account_login' %}" class="w3-text-deep-purple w3-hover-text-amber">Log In</a> here.</p>
+        
+    </form>
+</div>
+{% endblock %}

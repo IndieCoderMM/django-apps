@@ -35,7 +35,7 @@
 <form action="" method="post">
     {% csrf_token %}
     <div class="w3-display-container w3-text-deep-purple w3-bottombar w3-border-deep-purple">
-            <h3>🎁 All Tasks</h3>
+            <h3>📦 All Tasks</h3>
             <button type="submit" class="w3-btn w3-round w3-deep-purple w3-border w3-border-deep-purple w3-hover-white w3-display-right" name="update" value="true">Update</button>
     </div>
     {% if tasks %}
@@ -61,7 +61,7 @@
         </ul>
     <div>
     {% else %}
-    <div class="w3-panel w3-yellow w3-leftbar w3-border-amber">
+    <div class="w3-panel w3-yellow w3-leftbar w3-border-amber w3-large w3-round">
         <p>You don't have any task added yet. Click <span class="w3-tag w3-deep-purple w3-round">+NewTask</span> button to add new task.</p>
     </div>
     {% endif %}

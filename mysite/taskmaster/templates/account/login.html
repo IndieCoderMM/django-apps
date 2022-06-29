@@ -1,0 +1,42 @@
+{% extends 'taskmaster/base.html' %}
+{% block pagetitle %}
+Login
+{% endblock %}
+{% block pagename %}
+	<span class="w3-text-deep-purple">
+        <b>Log In</b>
+    </span>
+{% endblock %}
+
+{% block content %}
+<div class="w3-card w3-section w3-round w3-center "  style="width:50%;margin:auto">
+    <h2 class="w3-deep-purple w3-padding">Log In</h2>
+    <form method="post" class="w3-container w3-padding">
+        {% csrf_token %}
+        {% if form.errors %}
+            <div class="w3-text-red">
+                <p>{{form.non_field_errors}}</p>
+            </div>    
+        {% endif %}
+
+        <div class="w3-section"> 
+            <label class="w3-text-deep-purple w3-left w3-large">Email</label>
+            <input type="email" name="login" id="id_login" placeholder="Your Email Address" class="w3-input w3-border w3-border-blue">
+        </div>
+
+        <div class="w3-section">
+            <label class="w3-text-deep-purple w3-left w3-large">Password</label>
+            <input type="password" name="password" id="id_password" placeholder="Password" class="w3-input w3-border w3-border-blue">
+        </div>
+
+        {% if redirect_field_value %}
+            <input type="hidden" name="{{redirect_field_name}}" value="{{redirect_field_value}}">
+        {% endif %}
+
+        <button type="submit" class="w3-btn w3-deep-purple w3-round w3-hover-white w3-border">Log In</button>
+
+        <p class="w3-large">Don't have an account? <a href="{% url 'account_signup' %}" class="w3-text-deep-purple w3-hover-text-amber">Sign Up</a> here.</p>
+        
+    </form>
+</div>
+{% endblock %}

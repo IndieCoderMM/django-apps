@@ -1,0 +1,26 @@
+{% extends 'taskmaster/base.html' %}
+{% block pagetitle %}
+Sign Out
+{% endblock %}
+{% block pagename %}
+	<span class="w3-text-deep-purple">
+        <b>Sign Out</b>
+    </span>
+{% endblock %}
+
+{% block content %}
+    <div class="w3-card w3-round " style="width:50%;margin:auto">
+        <h2 class="w3-deep-purple w3-padding">Confirm Sign Out</h2>
+        <form method="post" class="w3-container w3-padding w3-large">
+            {% csrf_token %}
+            <p class="w3-text-deep-purple ">
+            Are you sure you want to sign out?
+        </p>
+        <div class="w3-container w3-right w3-section">
+            <a href="{% url 'taskmaster:home' %}" class="w3-btn w3-blue-grey w3-border">Cancel</a>
+            <button class="w3-btn w3-pink w3-border" type="submit">Sign Out</button>
+        </div>
+            
+        </form>
+    </div>
+{% endblock %}
